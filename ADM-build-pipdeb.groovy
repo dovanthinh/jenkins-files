@@ -17,16 +17,13 @@ node("master") {
         def build = sh(script: "fpm -s python -t deb ${fpmOpts} ${MODULE}", returnStdout: true)
         build.tokenize("\n").each { line ->
             if (line.contains('Created package')) {
-                builtPkg = line.split("\"")[-2]
+                built_pkg = line.split("\"")[-2]
             }
         }
     }
     stage("Upload Repo") {
         if (REPO != "") {
-            echo "run script to upload repo"
-        }
-        else {
-            echo "done"
+            sh(script: "python /sysadmin/jenkins/script/aptly_repo.py ${build_pkg} -r ${REPO}")
         }
     }    
 }
