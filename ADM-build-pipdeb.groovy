@@ -17,7 +17,7 @@ node("master") {
         def build = sh(script: "fpm -s python -t deb ${fpmOpts} ${MODULE}", returnStdout: true)
         build.tokenize("\n").each { line ->
             if (line.contains('Created package')) {
-                built_pkg = line.split("\"")[-2]
+                build_pkg = line.split("\"")[-2]
             }
         }
     }
