@@ -23,7 +23,7 @@ node("master") {
     }
     stage("Upload Repo") {
         if (REPO != "") {
-            sh(script: "python /sysadmin/jenkins/script/aptly_repo.py ${build_pkg} -r ${REPO}")
+            sh(script: "python /sysadmin/jenkins-script/aptly_repo.py ${build_pkg} -r ${REPO}")
         }
     }    
 }
