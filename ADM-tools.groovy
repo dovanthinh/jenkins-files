@@ -1,7 +1,7 @@
 @Library('admin-groovy-libs@master') _
 
 //Variables
-def pkg = PKG.trim()
+def pkg = URLDecoder.decode(DEBURL)
 def srv = SRV
 String pkgName = ""
 String pkgVer = ""
@@ -10,6 +10,11 @@ pkgName = pkgInfo[0]
 pkgVer = pkgInfo[1]
 
 pkgPermission.checkPkgPermission(pkgName, srv)
+
+
+def upload_pkg() {
+     build job: 'ADM-deb-upload', parameters: [string(name: 'DEBURL', value: DEBURL)]
+}
 
 def deploy_pkg(srv, pkg) {
     node("master") {
