@@ -37,6 +37,9 @@ try {
     stage("Downtime") {
         println "Downtime ..."
     }
+    stage("Uploading") {
+		upload_pkg()
+    }
     stage("Deloying") {
         deploy_pkg(srv, 'atop=2.3.0-1')
     }
