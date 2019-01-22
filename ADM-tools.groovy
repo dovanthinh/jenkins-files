@@ -13,7 +13,10 @@ pkgPermission.checkPkgPermission(pkgName, srv)
 
 
 def upload_pkg() {
-     build job: 'ADM-deb-upload', parameters: [string(name: 'DEBURL', value: DEBURL)]
+    node("master") {
+    sleep(5)
+    println "Call ADM-deb-upload to upload deb pkg to Repo"
+    build job: 'ADM-deb-upload', parameters: [string(name: 'DEBURL', value: DEBURL)]
 }
 
 def deploy_pkg(srv, pkg) {
@@ -41,6 +44,7 @@ try {
 		upload_pkg()
     }
     stage("Deloying") {
+        println pkgName + "=" +  pkgVer
         deploy_pkg(srv, 'atop=2.3.0-1')
     }
     stage("Rechecking") {
