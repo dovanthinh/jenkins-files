@@ -45,8 +45,8 @@ try {
 		upload_pkg()
     }
     stage("Deloying") {
-        println pkgName + "=" +  pkgVer
-        deploy_pkg(srv, 'atop=2.3.0-1')
+        pkg =  pkgName + "=" +  pkgVer
+        deploy_pkg(srv, pkg)
     }
     stage("Rechecking") {
         check_service(srv, pkgName)
