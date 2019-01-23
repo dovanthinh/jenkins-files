@@ -15,7 +15,7 @@ pkgPermission.checkPkgPermission(pkgName, srv)
 def upload_pkg() {
     node("master") {
         sleep(5)
-        println "Call ADM-deb-upload to upload deb pkg to Repo"
+        println "Calling ADM-deb-upload to upload deb pkg to Repo"
         build job: 'ADM-deb-upload', parameters: [string(name: 'DEBURL', value: DEBURL)]
     }
 }
