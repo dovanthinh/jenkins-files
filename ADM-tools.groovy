@@ -60,6 +60,7 @@ catch(Exception exp) {
     currentBuild.result = "FAILURE"
 }
 finally {
+    println currentBuild.result
     telegramNotify.notify("${env.JOB_NAME}", pkg, srv, currentBuild.result)
 }
 
