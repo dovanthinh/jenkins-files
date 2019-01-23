@@ -37,6 +37,7 @@ def check_service(srv, pkgName) {
 
 currentBuild.displayName = "#" + currentBuild.number + " - " + pkgName + "=" + pkgVer + " - " + SRV
 
+pkg = pkgName + "=" +  pkgVer
 try {
     stage("Downtime") {
         println "Downtime ..."
@@ -45,14 +46,20 @@ try {
 		upload_pkg()
     }
     stage("Deloying") {
-        pkg =  pkgName + "=" +  pkgVer
         deploy_pkg(srv, pkg)
     }
     stage("Rechecking") {
         check_service(srv, pkgName)
     }
+    currentBuild.result = "SUCCESS"
 }
 catch(Exception exp) {
+    println(exp.toString());
+    println(exp.getMessage());
+    println(exp.getStackTrace());
     currentBuild.result = "FAILURE"
+}
+finally {
+    telegramNotify.notify(${env.JOB_NAME}, pkg, srv, currentBuild.result)
 }
 
