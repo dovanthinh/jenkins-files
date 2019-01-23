@@ -8,6 +8,7 @@ String pkgVer = ""
 pkgInfo = pkgInfo.getPkgInfo(pkg)
 pkgName = pkgInfo[0]
 pkgVer = pkgInfo[1]
+jobName = ${env.JOB_NAME}
 
 pkgPermission.checkPkgPermission(pkgName, srv)
 
@@ -60,6 +61,6 @@ catch(Exception exp) {
     currentBuild.result = "FAILURE"
 }
 finally {
-    telegramNotify.notify(${env.JOB_NAME}, pkg, srv, currentBuild.result)
+    telegramNotify.notify(jobName, pkg, srv, currentBuild.result)
 }
 
