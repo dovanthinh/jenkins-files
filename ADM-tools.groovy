@@ -1,6 +1,6 @@
 @Library('admin-groovy-libs@master') _
 
-//Variables
+/***VARIABLES***/
 def pkg = URLDecoder.decode(DEBURL)
 def srv = SRV
 String pkgName = ""
@@ -11,7 +11,7 @@ pkgVer = pkgInfo[1]
 
 pkgPermission.checkPkgPermission(pkgName, srv)
 
-
+/***FUNCTIONS***/
 def upload_pkg() {
     node("master") {
         sleep(5)
@@ -35,9 +35,11 @@ def check_service(srv, pkgName) {
     }
 }
 
-currentBuild.displayName = "#" + currentBuild.number + " - " + pkgName + "=" + pkgVer + " - " + SRV
-
+/***JobName***/
 pkg = pkgName + "=" +  pkgVer
+currentBuild.displayName = "#" + currentBuild.number + " - " + pkg + " - " + SRV
+
+/***WORKFLOW***/
 try {
     stage("Downtime") {
         println "Downtime ..."
@@ -60,7 +62,6 @@ catch(Exception exp) {
     currentBuild.result = "FAILURE"
 }
 finally {
-    println currentBuild.result
     telegramNotify.notify("${env.JOB_NAME}", pkg, srv, currentBuild.result)
 }
 
