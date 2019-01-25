@@ -35,7 +35,7 @@ def check_service(srv, pkgName) {
     }
 }
 
-/***JobName***/
+/***JOBNAME***/
 pkg = pkgName + "=" +  pkgVer
 currentBuild.displayName = "#" + currentBuild.number + " - " + pkg + " - " + SRV
 
