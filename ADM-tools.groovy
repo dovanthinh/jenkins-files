@@ -37,6 +37,7 @@ def check_service(srv, pkgName) {
 
 def loadtest(glClass, jobName) {
     node("master") {
+        sleep(5)
         sh(script: "/bin/bash /sysadmin/gatling/bin/gatling.sh -s sysadmin.${glClass} -rf /sysadmin/gatling/results/${jobName}/")
     }
 }
