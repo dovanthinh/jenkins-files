@@ -35,20 +35,29 @@ def check_service(srv, pkgName) {
     }
 }
 
+def loadtest(glClass, jobName) {
+    node("master") {
+        sh(script: "/bin/bash /sysadmin/gatling/bin/gatling.sh -s sysadmin.${glClass} -rf /sysadmin/gatling/results/${jobName}/")
+    }
+}
+
 /***JOBNAME***/
 pkg = pkgName + "=" +  pkgVer
 currentBuild.displayName = "#" + currentBuild.number + " - " + pkg + " - " + SRV
 
 /***WORKFLOW***/
 try {
-    stage("Downtime") {
-        println "Downtime ..."
-    }
     stage("Uploading") {
 		upload_pkg()
     }
-    stage("Deloying") {
+    stage("Deloy to DEV") {
         deploy_pkg(srv, pkg)
+    }
+    stage("Loadtest") {
+		loadtest(pkgName, pkgName)
+    }
+    stage("Deploy to Prod") {
+        println("deploying.. to Prod")
     }
     stage("Rechecking") {
         check_service(srv, pkgName)
